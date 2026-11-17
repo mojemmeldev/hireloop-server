@@ -25,12 +25,30 @@ export async function connectToMongoDB() {
 }
 const connectedClient= await connectToMongoDB();
 const database = connectedClient.db("hirloop-db");
-const users = database.collection("users")
+const users = database.collection("user")
+const jobs = database.collection("jobs")
+
 
 
 app.get('/', (req, res) => {
   res.send('hireloop is looping');
 });
+
+
+// mongodb collection user get data by api
+app.get ('/users', async(req,res)=>{
+  const cursor = users.find({});
+  const result=await cursor.toArray()
+  res.send(result);
+})
+
+
+// mongodb collection jobs get data by api
+app.get ('/jobs', async(req,res)=>{
+  const cursor = jobs.find({});
+  const result=await cursor.toArray()
+  res.send(result);
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
