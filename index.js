@@ -42,6 +42,7 @@ app.get ('/users', async(req,res)=>{
   res.send(result);
 })
 
+// mongodb collection jobs all Method
 
 // mongodb collection jobs get data by api
 app.get ('/jobs', async(req,res)=>{
@@ -49,6 +50,14 @@ app.get ('/jobs', async(req,res)=>{
   const result=await cursor.toArray()
   res.send(result);
 })
+
+// mongodb collection jobs post data by api
+app.post ('/jobs', async(req,res)=>{
+  const job=req.body;
+  const result=await jobs.insertOne({job});
+  res.send(result);
+})
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
