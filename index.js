@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from "cors";
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import "dotenv/config";
 
 const app = express();
@@ -54,7 +54,23 @@ app.get ('/jobs', async(req,res)=>{
 // mongodb collection jobs post data by api
 app.post ('/jobs', async(req,res)=>{
   const job=req.body;
-  const result=await jobs.insertOne({job});
+  const result=await jobs.insertOne(job);
+  res.send(result);
+})
+
+// mongodb collection jobs delete data by api
+app.delete ('/jobs/:id', async(req,res)=>{
+  const id = req.params.id;
+  const query= {_id: new ObjectId(id)}
+  const result=await jobs.deleteOne(query);
+  res.send(result);
+})
+
+// mongodb collection jobs update data by api
+app.patch ('/jobs/:id', async(req,res)=>{
+  const id = req.params.id;
+  const updatedData=req.body;
+    const result=await jobs.updateOne({_id: new ObjectId(id)},{$set:updatedData});
   res.send(result);
 })
 
